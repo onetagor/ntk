@@ -24,8 +24,8 @@
                     </h1>
                 </a> </div>
             <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
-                <form action="{{route('adminValidateLogin')}}" method="post">
+                <p class="login-box-msg">Type Email or Mobile</p>
+                <form action="{{route('findUser')}}" method="post">
                     @csrf
                     <div class="input-group mb-1">
                         <div class="form-floating"> <input id="email_or_phone" type="text" name="email_or_phone" class="form-control" value="" placeholder=""> <label for="email_or_phone">Email or Mobile</label> </div>
@@ -35,23 +35,15 @@
                          </div>
                     </div>
 
-                    <div class="input-group mb-1">
-                        <div class="form-floating"> <input id="password" type="password" name="password" class="form-control" placeholder=""> <label for="password">Password</label> </div>
-                        <div class="input-group-text"> <span class="bi bi-lock-fill"></span> </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-8 d-inline-flex align-items-center">
-                            <div class="form-check"> <input class="form-check-input" type="checkbox" name="remember" value="1" id="flexCheckDefault"> <label class="form-check-label" for="flexCheckDefault">
-                                    Remember Me
-                                </label> </div>
-                        </div> <!-- /.col -->
-                        <div class="col-4">
-                            <div class="d-grid gap-2"> <button type="submit" class="btn btn-primary">Sign In</button> </div>
+                    <div class="text-center row mt-3">
+                        <div class="col-12">
+                            <div class="text-center">
+                                 <button type="submit" class="btn btn-primary">send code</button>
+                            </div>
                         </div> <!-- /.col -->
                     </div> <!--end::Row-->
                 </form>
-                <p class="mb-1"> <a href="{{ route('loadForgetMyPass') }}">I forgot my password</a> </p>
+
             </div> <!-- /.login-card-body -->
         </div>
     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ForgetPassMail;
 use App\Models\Admin;
 use App\Models\Country;
 use App\Models\Gender;
@@ -11,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Propaganistas\LaravelPhone\Rules\Phone;
@@ -25,6 +27,73 @@ class AdminController extends Controller
         return view('auth.admin.login',compact('datas','genders'));
 
     }
+
+    public function loadForgetMyPass()
+    {
+        $datas = Country::all();
+        return view('auth.admin.forget',compact('datas'));
+
+    }
+
+    public function findUser(Request $request)
+    {
+        $countryIso = Country::where('id',18)->first();
+
+        $validated = $request->validate([
+            'email_or_phone' => ['bail','required'],
+            ],
+            [
+                'email_or_phone.regex' => 'The phone number must contain only English digits (0-9).',
+                'email_or_phone.required' => 'The phone number is required',
+            ]
+        );
+
+        if (filter_var($request->email_or_phone, FILTER_VALIDATE_EMAIL)) {
+            $credential = array("email" => $request->email_or_phone);
+            $email = true;
+        }
+        else
+        {
+            $phoneNumber = validationMobileNumber($request->email_or_phone,$countryIso->iso);
+            $credential = array("phone" => $phoneNumber);
+            $email = false;
+        }
+
+        $admin = Admin::where($credential)->first();
+
+        if ($admin) {
+            $randCode = rand(100000,999999);
+            $toster = array(
+                'message' => 'User Found',
+                'alert-type' => 'success'
+            );
+
+            $name = $admin->name;
+            $messageContent = "Your Reset Code is : {$randCode}";
+
+            // Email Code
+            if($email)
+            {
+                Mail::to($admin->email)->queue(new ForgetPassMail($name,$messageContent));
+            }
+
+
+            //sms code
+
+            return view('auth.admin.forget',compact('admin'))->with( $toster);
+        }
+        else
+        {
+            $toster = array(
+                'message' => 'User Not Found',
+                'alert-type' => 'error'
+            );
+
+            return back()->with( $toster);
+        }
+    }
+
+
 
     public function adminValidateLogin(Request $request)
     {
@@ -57,7 +126,12 @@ class AdminController extends Controller
 
             if (($user->status == 0)) {
 
-                return back()->with('fail', 'This account is in black listed');
+                $toster = array(
+                    'message' => 'This account is in black listed',
+                    'alert-type' => 'error'
+                );
+
+                return back()->with( $toster);
             } else {
 
                 return redirect()->route('admin.dashboard');
@@ -68,13 +142,17 @@ class AdminController extends Controller
 
         else
         {
-            return back()->with('fail', 'Wrong Credential');
+            $toster = array(
+                'message' => 'Wrong Credential',
+                'alert-type' => 'error'
+            );
+
+            return back()->with( $toster);
+
         }
     }
     public function dashboard()
-
     {
-
         return view('admin.dashboard');
     }
 

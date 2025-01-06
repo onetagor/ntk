@@ -10,6 +10,8 @@ Route::prefix('admin')->group(function () {
 
      Route::controller(AdminController::class)->group(function () {
                 Route::get('login', 'adminLogin')->name('adminLogin');
+                Route::get('load/forgetpass', 'loadForgetMyPass')->name('loadForgetMyPass');
+                Route::post('find/user', 'findUser')->name('findUser');
                 Route::post('validate/login', 'adminValidateLogin')->name('adminValidateLogin');
         //     Route::post('update/{survey:uuid}', 'update');
         //     Route::get('show/{survey:uuid}', 'show');
