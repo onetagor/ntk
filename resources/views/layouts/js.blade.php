@@ -2,6 +2,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha256-whL0tQWoY1Ku1iskqPFvmZ+CHsvmRWx/PIoEvIeWh4I=" crossorigin="anonymous"></script> <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
 
 {{-- <script src="{{asset('js/adminlte.min.js')}}"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script src="{{asset('bootstrap/js/bootstrap.min.js')}}"></script>
 <script src="{{asset('js/adminlte.js')}}"></script>
 <script>
@@ -26,4 +27,37 @@
             });
         }
     });
+</script>
+
+
+
+<script>
+    @if (Session::has('message'))
+        var type = "{{ Session::get('alert-type', 'info') }}"
+        switch (type) {
+            case 'info':
+
+                toastr.options.timeOut = 5000;
+                toastr.info("{{ Session::get('message') }}");
+                break;
+            case 'success':
+
+                toastr.options.timeOut = 5000;
+                toastr.success("{{ Session::get('message') }}");
+
+                break;
+            case 'warning':
+
+                toastr.options.timeOut = 5000;
+                toastr.warning("{{ Session::get('message') }}");
+
+                break;
+            case 'error':
+
+                toastr.options.timeOut = 5000;
+                toastr.error("{{ Session::get('message') }}");
+
+                break;
+        }
+    @endif
 </script>
