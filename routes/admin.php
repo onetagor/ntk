@@ -13,10 +13,15 @@ Route::prefix('admin')->group(function () {
                 Route::get('load/forgetpass', 'loadForgetMyPass')->name('loadForgetMyPass');
                 Route::post('find/user', 'findUser')->name('findUser');
                 Route::post('validate/login', 'adminValidateLogin')->name('adminValidateLogin');
+                Route::post('update/password', 'updatePassword')->name('updatePassword');
+                Route::post('validate/otp', 'validateOtp')->name('validateOtp');
+
+
         //     Route::post('update/{survey:uuid}', 'update');
         //     Route::get('show/{survey:uuid}', 'show');
         //     Route::get('cheak/status/{survey:uuid}', 'cheakStatus');
          });
+         Route::match(['get', 'post'], 'load/otp', [AdminController::class, 'otpLoad'])->name('otpLoad');
 
     Route::middleware(['auth:admin'])->group(function () {
 

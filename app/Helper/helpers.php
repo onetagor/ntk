@@ -106,3 +106,13 @@ if (! function_exists('validationMobileNumber')) {
         }
     }
    }
+
+   if (! function_exists('storeOtp')) {
+    function storeOtp($clientObject,$otp)
+    {
+        $clientObject->update([
+            'otp'=>$otp
+        ]);
+        return true;
+    }
+   }
