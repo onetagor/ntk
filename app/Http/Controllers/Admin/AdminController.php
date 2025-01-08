@@ -12,8 +12,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator ;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Propaganistas\LaravelPhone\Rules\Phone;
 
@@ -50,7 +52,6 @@ class AdminController extends Controller
 
         if (filter_var($request->email_or_phone, FILTER_VALIDATE_EMAIL)) {
             $credential = array("email" => $request->email_or_phone);
-            $email = true;
         }
         else
         {
@@ -62,25 +63,13 @@ class AdminController extends Controller
         $admin = Admin::where($credential)->first();
 
         if ($admin) {
-            $randCode = rand(100000,999999);
             $toster = array(
                 'message' => 'User Found',
                 'alert-type' => 'success'
             );
 
-            $name = $admin->name;
-            $messageContent = "Your Reset Code is : {$randCode}";
+            return redirect()->route('otpLoad')->with('uuid', $admin->id)->with($toster);
 
-            // Email Code
-            if($email)
-            {
-                Mail::to($admin->email)->queue(new ForgetPassMail($name,$messageContent));
-            }
-
-
-            //sms code
-
-            return view('auth.admin.forget',compact('admin'))->with( $toster);
         }
         else
         {
@@ -167,4 +156,119 @@ class AdminController extends Controller
 
         return redirect()->route('adminLogin');
     }
+
+
+    public function otpLoad(Request $request)
+    {
+        $uuID = session('uuid') ?? $request->uuid;
+        $admin = Admin::find($uuID);
+
+        if (!$admin) {
+            return back()->with([
+                'message' => 'User Not Found',
+                'alert-type' => 'error'
+            ]);
+        }
+
+        $randCode = rand(100000,999999);
+        $toster = array(
+            'message' => 'User Found',
+            'alert-type' => 'success'
+        );
+        $status = storeOtp($admin, $randCode);
+        $name = $admin->name;
+        $messageContent = "Your Reset Code is : {$randCode}";
+
+        // Email Code
+        if($admin->email != null && $status == true)
+        {
+            Mail::to($admin->email)->queue(new ForgetPassMail($name,$messageContent));
+        }
+        else
+        {
+            return back()->with([
+                'message' => 'Error in otp sending',
+                'alert-type' => 'error'
+            ]);
+        }
+
+        return view('auth.admin.otp', compact('admin'))->with($toster);
+
+    }
+
+    public function validateOtp(Request $request)
+    {
+
+
+        $validator = Validator::make($request->all(), [
+            'otp' => 'required|array|size:6',
+            'otp.*' => 'required|digits:1',
+        ]);
+
+
+
+        if ($validator->fails()) {
+            $toster = array(
+                'message' => 'Wrong OTP',
+                'alert-type' => 'error'
+            );
+            return redirect()->route('loadForgetMyPass')->with( $toster);
+        }
+
+        $otp = preg_replace('/\D/', '', implode('', $request->input('otp')));
+
+
+        $admin = Admin::find($request->uuid);
+
+        // if ($admin->otp == $request->otp && $admin->otp_validate_time > now())
+        if ($admin?->otp == $otp)
+        {
+            return view('auth.admin.confirmpass', compact('admin'));
+        }
+        else
+        {
+            $toster = array(
+                'message' => 'Wrong OTP',
+                'alert-type' => 'error'
+            );
+
+            return back()->with( $toster);
+        }
+    }
+
+    public function updatePassword(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'password' => 'required',
+            'password_confirmation' => 'required|same:password',
+        ],
+        [
+            'password.required' => 'The Password is required',
+            'password_confirmation.required' => 'The Confirm Password is required',
+            'password_confirmation.same' => 'The Confirm Password and Password must match',
+        ]
+    );
+
+        if ($validator->fails()) {
+            $toster = array(
+                'message' => $validator->errors()->first(),
+                'alert-type' => 'error'
+            );
+            return redirect()->route('adminLogin')->with( $toster);
+        }
+
+
+        $admin = Admin::find($request->uuid);
+        $admin->password = Hash::make($request->password);
+        $admin->save();
+
+        $toster = array(
+            'message' => 'Password Updated',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('adminLogin')->with($toster);
+    }
+
 }
