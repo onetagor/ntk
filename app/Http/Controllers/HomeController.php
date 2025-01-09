@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ForgetPassMail;
 use App\Models\Country;
 use App\Models\Gender;
 use App\Models\User;
@@ -14,7 +15,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator ;
 
 class HomeController extends Controller
 {
@@ -91,7 +94,13 @@ class HomeController extends Controller
 
                 if (($user->status == 0)) {
 
-                    return back()->with('fail', 'This account is in black listed');
+
+                    $toster = array(
+                        'message' => "This account is in black listed",
+                        'alert-type' => 'error'
+                    );
+                    return back()->with( $toster);
+
                 } else {
 
                     if ($request->has('remember')) {
@@ -99,7 +108,12 @@ class HomeController extends Controller
                     } else {
                         Auth::guard('web')->login($user);
                     }
-                    return redirect()->route('user.dashboard');
+                    $toster = array(
+                        'message' => "Wlecome to Dashboard, ".$user->name,
+                        'alert-type' => 'success'
+                    );
+
+                    return redirect()->route('user.dashboard')->with( $toster);
                 }
 
             }
@@ -111,7 +125,12 @@ class HomeController extends Controller
         }
         else
         {
-            return back()->with('fail', 'Wrong Credential');
+            $toster = array(
+                'message' => "User Not Found",
+                'alert-type' => 'error'
+            );
+
+            return back()->with( $toster);
         }
     }
 
@@ -122,26 +141,29 @@ class HomeController extends Controller
     public function storRegistration(Request $request)
     {
         $code = rand(100000,999999);
-        $countryIso = Country::where('id',$request->country_id)->first();
-        // dd($countryIso->iso);
+        $countryID = $request->country_id ?? 18;
+        $countryIso = Country::where('id',$countryID)->first();
+
+
         $validated = $request->validate([
             'name' => 'required',
             'email' => 'unique:users',
             'password' => 'required|confirmed',
-            'password_confirmation' => 'required',
+            'password_confirmation' => 'required|same:password',
             // 'education_type_id' => 'required',
             'phone' => ['required','unique:users','regex:/^[0-9+]+$/',(new Phone)->country([$countryIso->iso]??['BD']),],
             // 'upazila_id' => 'required',
             // 'district_id' => 'required',
             // 'division_id' => 'required',
             'gender_id' => 'required',
-            'country_id' => 'required',
+            // 'country_id' => 'required',
             ],
             [
                 'phone.regex' => 'The phone number must contain only English digits (0-9).',
                 'phone.required' => 'The phone number is required',
             ]
         );
+
 
         $phoneNumber = validationMobileNumber($request->phone,$countryIso->iso);
 
@@ -172,18 +194,24 @@ class HomeController extends Controller
                 );
                 $userDetail = UserDetail::create($userdetail);
 
-                // $role_name = Role::where('id',$request->role_type)->first();
-
-                // $newuser->assignRole($role_name->name);
                 return $newuser;
             });
 
-            if ($user->status == 0) {
+            if ($user->status == 1) {
+                $toster = array(
+                    'message' => "Registration Successfull",
+                    'alert-type' => 'success'
+                );
+                return redirect()->route('login')->with( $toster);
 
-                return back()->with('fail', 'This account is in black listed');
             } else {
 
-                return back()->with('success', 'This account is created');
+                $toster = array(
+                    'message' => "Registration Fail",
+                    'alert-type' => 'error'
+                );
+                return redirect()->route('registration')->with( $toster);
+
             }
     }
 
@@ -208,5 +236,181 @@ class HomeController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::route('login');
+    }
+
+    public function loadForgetMyPass()
+    {
+        $datas = Country::all();
+        return view('auth.forgetpass',compact('datas'));
+
+    }
+
+    public function searchUser(Request $request)
+    {
+        $countryIso = Country::where('id',18)->first();
+
+        $validated = $request->validate([
+            'email_or_phone' => ['bail','required'],
+            ],
+            [
+                'email_or_phone.regex' => 'The phone number must contain only English digits (0-9).',
+                'email_or_phone.required' => 'The phone number is required',
+            ]
+        );
+
+        if (filter_var($request->email_or_phone, FILTER_VALIDATE_EMAIL)) {
+            $credential = array("email" => $request->email_or_phone);
+        }
+        else
+        {
+            $phoneNumber = validationMobileNumber($request->email_or_phone,$countryIso->iso);
+            $credential = array("phone" => $phoneNumber);
+            $email = false;
+        }
+
+        $user = User::where($credential)->first();
+
+        if ($user) {
+            $toster = array(
+                'message' => 'User Found',
+                'alert-type' => 'success'
+            );
+
+            return redirect()->route('userOtpLoad')->with('uuid', $user->id)->with($toster);
+
+        }
+        else
+        {
+            $toster = array(
+                'message' => 'User Not Found',
+                'alert-type' => 'error'
+            );
+
+            return back()->with( $toster);
+        }
+    }
+
+
+    public function userOtpLoad(Request $request)
+    {
+        $uuID = session('uuid') ?? $request->uuid;
+        $user = User::find($uuID);
+
+        if (!$user) {
+            return back()->with([
+                'message' => 'User Not Found',
+                'alert-type' => 'error'
+            ]);
+        }
+
+        $randCode = rand(100000,999999);
+        $toster = array(
+            'message' => 'User Found',
+            'alert-type' => 'success'
+        );
+        $status = storeOtp($user, $randCode);
+        $name = $user->name;
+        $messageContent = "Your Reset Code is : {$randCode}";
+
+        // Email Code
+        if($user->email != null && $status == true)
+        {
+            Mail::to($user->email)->queue(new ForgetPassMail($name,$messageContent));
+        }
+        else
+        {
+            return back()->with([
+                'message' => 'Error in otp sending',
+                'alert-type' => 'error'
+            ]);
+        }
+
+        return view('auth.userotp', compact('user'))->with($toster);
+
+
+    }
+
+
+    public function validateUserOtp(Request $request)
+    {
+
+
+        $validator = Validator::make($request->all(), [
+            'otp' => 'required|array|size:6',
+            'otp.*' => 'required|digits:1',
+        ]);
+
+
+
+        if ($validator->fails()) {
+            $toster = array(
+                'message' => 'Wrong OTP',
+                'alert-type' => 'error'
+            );
+            return redirect()->route('forgetMyPass')->with( $toster);
+        }
+
+        $otp = preg_replace('/\D/', '', implode('', $request->input('otp')));
+
+
+        $user = User::find($request->uuid);
+
+        // if ($admin->otp == $request->otp && $admin->otp_validate_time > now())
+        if ($user?->otp == $otp)
+        {
+            $toster = array(
+                'message' => 'Otp Matched',
+                'alert-type' => 'success'
+            );
+            return view('auth.passconfirm', compact('user'))->with($toster);
+        }
+        else
+        {
+            $toster = array(
+                'message' => 'Wrong OTP',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->route('userOtpLoad')->with('uuid', $user->id)->with($toster);
+            // return view('auth.userotp', compact('user'))->with($toster);
+
+        }
+    }
+
+
+
+    public function updateUserPassword(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'password' => 'required',
+            'password_confirmation' => 'required|same:password',
+        ],
+        [
+            'password.required' => 'The Password is required',
+            'password_confirmation.required' => 'The Confirm Password is required',
+            'password_confirmation.same' => 'The Confirm Password and Password must match',
+        ]
+    );
+
+        if ($validator->fails()) {
+            $toster = array(
+                'message' => $validator->errors()->first(),
+                'alert-type' => 'error'
+            );
+            return redirect()->route('login')->with( $toster);
+        }
+
+
+        $user = User::find($request->uuid);
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        $toster = array(
+            'message' => 'Password Updated',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('login')->with($toster);
     }
 }

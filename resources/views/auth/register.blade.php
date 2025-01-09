@@ -22,6 +22,7 @@
         integrity="sha256-Qsx5lrStHZyR9REqhUF8iQt73X06c8LGIUPzpOhwRrI=" crossorigin="anonymous">
     <!--end::Third Party Plugin(Bootstrap Icons)--><!--begin::Required Plugin(AdminLTE)-->
     <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}"><!--end::Required Plugin(AdminLTE)-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
 </head> <!--end::Head--> <!--begin::Body-->
 
 <body class="register-page bg-body-secondary">
@@ -34,19 +35,7 @@
                 </a> </div>
             <div class="card-body register-card-body">
                 <p class="register-box-msg">Register a new membership</p>
-                @if (session('fail'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ session('fail') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
 
-                @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
 
                 <form action="{{ route('storRegistration') }}" method="post">
                     @csrf
@@ -56,9 +45,9 @@
                         <div class="input-group-text"> <span class="bi bi-person"></span> </div>
 
                     </div>
-                        @error('name')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                    @error('name')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                     <div class="input-group mb-1">
                         <div class="form-floating"> <input id="registerEmail" type="email" class="form-control"
                                 name="email" placeholder=""> <label for="registerEmail">Email</label> </div>
@@ -68,7 +57,7 @@
                     </div>
 
                     @error('email')
-                    <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                     @enderror
                     <div class="input-group mb-1">
                         <div class="form-floating"> <input id="phone" type="number" name="phone"
@@ -77,9 +66,9 @@
 
 
                     </div>
-                        @error('phone')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                    @error('phone')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
 
                     <div class="input-group mb-1">
                         <div class="form-floating">
@@ -92,8 +81,8 @@
                     </div>
 
                     @error('password')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                     <div class="input-group mb-1">
                         <div class="form-floating">
                             <input id="password_confirmation" name="password_confirmation" type="password"
@@ -103,7 +92,7 @@
                         <div class="input-group-text"> <span class="bi bi-lock"></span> </div>
                     </div>
                     <!--begin::Row-->
-                    <div class="input-group mb-1">
+                    {{-- <div class="input-group mb-1">
                         <div class="form-floating">
                             <select class="form-select form-control" id="country" name="country_id" required>
                                 @forelse ($datas as $value)
@@ -126,19 +115,15 @@
                     </div>
 
                     @error('country_id')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror --}}
 
 
                     <div class="input-group mb-1">
                         <div class="form-floating">
                             <select class="form-select form-control" id="gender" name="gender_id" required>
-                                @forelse ($genders as $gvalue)
-                                    <option value="{{ $gvalue->id }}" {{ $value->id == 1 ? 'selected' : '' }}>
-                                        {{ $gvalue->name }}</option>
-                                @empty
-                                    <option value="1">Male</option>
-                                @endforelse
+                                <option value="1" selected>Male</option>
+                                <option value="2">Female</option>
 
                             </select>
                             <label for="country">Gender</label>
@@ -152,8 +137,8 @@
 
                     </div>
                     @error('gender_id')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                     <!--begin::Row-->
                     <div class="row mt-1">
                         <div class="col-8 d-inline-flex align-items-center">
@@ -172,12 +157,13 @@
                     </a> <a href="#" class="btn btn-danger"> <i class="bi bi-google me-2"></i> Sign in using Google+
                     </a>
                 </div> <!-- /.social-auth-links --> --}}
-                <p class="mb-0"> <a href="login.html" class="link-primary text-center">
+                <p class="mb-0"> <a href="{{ route('login') }}" class="link-primary text-center">
                         I already have a membership
                     </a> </p>
             </div> <!-- /.register-card-body -->
         </div>
     </div> <!-- /.register-box --> <!--begin::Third Party Plugin(OverlayScrollbars)-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.3.0/browser/overlayscrollbars.browser.es6.min.js"
         integrity="sha256-H2VM7BKda+v2Z4+DRy69uknwxjyDRhszjXFhsL4gD3w=" crossorigin="anonymous"></script>
     <!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
@@ -187,6 +173,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha256-YMa+wAM6QkVyz999odX7lPRxkoYAan8suedu4k2Zur8=" crossorigin="anonymous"></script> <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
     <script src="{{ asset('js/adminlte.min.js') }}"></script> <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
     <script>
         const SELECTOR_SIDEBAR_WRAPPER = ".sidebar-wrapper";
         const Default = {
@@ -212,12 +200,36 @@
     </script> <!--end::OverlayScrollbars Configure--> <!--end::Script-->
 
 <script>
-    $(document).ready(function() {
-        setTimeout(function() {
-            $(".alert").alert('close');
-        }, 5000); // Closes the alert after 5 seconds
-    });
+    @if (Session::has('message'))
+        var type = "{{ Session::get('alert-type', 'info') }}"
+        switch (type) {
+            case 'info':
+
+                toastr.options.timeOut = 5000;
+                toastr.info("{{ Session::get('message') }}");
+                break;
+            case 'success':
+
+                toastr.options.timeOut = 5000;
+                toastr.success("{{ Session::get('message') }}");
+
+                break;
+            case 'warning':
+
+                toastr.options.timeOut = 5000;
+                toastr.warning("{{ Session::get('message') }}");
+                break;
+
+            case 'error':
+
+                toastr.options.timeOut = 5000;
+                toastr.error("{{ Session::get('message') }}");
+                break;
+        }
+    @endif
 </script>
+
+
 </body><!--end::Body-->
 
 </html>

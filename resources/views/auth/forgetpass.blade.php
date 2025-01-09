@@ -25,34 +25,22 @@
                 </a> </div>
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
-                <form action="{{route('loginCheck')}}" method="post">
+
+                <form action="{{route('searchUser')}}" method="post">
                     @csrf
                     <div class="input-group mb-1">
-                        <div class="form-floating"> <input id="email_or_phone" type="text" name="email_or_phone" class="form-control" value="" placeholder=""> <label for="loginEmail">Email or Mobile</label> </div>
+                        <div class="form-floating"> <input id="email_or_phone" type="text" name="email_or_phone" class="form-control" value="" placeholder=""> <label for="email_or_phone">Email or Mobile</label> </div>
                         <div class="input-group-text">
                              <span class="bi bi-envelope"></span>
                              <span class="bi bi-phone"></span>
                          </div>
                     </div>
-                    @error('email_or_phone')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                    <div class="input-group mb-1">
-                        <div class="form-floating"> <input id="loginPassword" type="password" name="password" class="form-control" placeholder=""> <label for="loginPassword">Password</label> </div>
-                        <div class="input-group-text"> <span class="bi bi-lock-fill"></span> </div>
-                    </div> <!--begin::Row-->
 
-                    @error('password')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                    <div class="row">
-                        <div class="col-8 d-inline-flex align-items-center">
-                            <div class="form-check"> <input class="form-check-input" type="checkbox" name="remember" value="1" id="flexCheckDefault"> <label class="form-check-label" for="flexCheckDefault">
-                                    Remember Me
-                                </label> </div>
-                        </div> <!-- /.col -->
-                        <div class="col-4">
-                            <div class="d-grid gap-2"> <button type="submit" class="btn btn-primary">Sign In</button> </div>
+                    <div class="text-center row mt-3">
+                        <div class="col-12">
+                            <div class="text-center">
+                                 <button type="submit" class="btn btn-primary">send code</button>
+                            </div>
                         </div> <!-- /.col -->
                     </div> <!--end::Row-->
                 </form>
@@ -62,10 +50,8 @@
                     </a>
                 </div> --}}
                  <!-- /.social-auth-links -->
-                <p class="mb-1"> <a href="{{ route('forgetMyPass') }}">I forgot my password</a> </p>
-                <p class="mb-0"> <a href="{{ route('registration') }}" class="text-center">
-                        Register a new membership
-                    </a> </p>
+                <p class="mb-1"> <a href="{{ route('login') }}">Login</a> </p>
+
             </div> <!-- /.login-card-body -->
         </div>
     </div> <!-- /.login-box --> <!--begin::Third Party Plugin(OverlayScrollbars)-->
@@ -98,7 +84,6 @@
             }
         });
     </script> <!--end::OverlayScrollbars Configure--> <!--end::Script-->
-</body><!--end::Body-->
 
 <script>
     @if (Session::has('message'))
@@ -129,4 +114,6 @@
         }
     @endif
 </script>
+</body><!--end::Body-->
+
 </html>

@@ -13,68 +13,71 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.3.0/styles/overlayscrollbars.min.css" integrity="sha256-dSokZseQNT08wYEWiz5iLI8QPlKxG+TswNRD8k35cpg=" crossorigin="anonymous"><!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Third Party Plugin(Bootstrap Icons)-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.min.css" integrity="sha256-Qsx5lrStHZyR9REqhUF8iQt73X06c8LGIUPzpOhwRrI=" crossorigin="anonymous"><!--end::Third Party Plugin(Bootstrap Icons)--><!--begin::Required Plugin(AdminLTE)-->
     <link rel="stylesheet" href="{{asset('css/adminlte.css')}}"><!--end::Required Plugin(AdminLTE)-->
+    <link rel="stylesheet" href="{{ asset('css/otp.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
 </head> <!--end::Head--> <!--begin::Body-->
 
 <body class="login-page bg-body-secondary">
     <div class="login-box">
-        <div class="card card-outline card-primary">
-            <div class="card-header"> <a href="../index2.html" class="link-dark text-center link-offset-2 link-opacity-100 link-opacity-50-hover">
-                    <h1 class="mb-0"> <b>Admin</b>LTE
-                    </h1>
-                </a> </div>
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
-                <form action="{{route('loginCheck')}}" method="post">
-                    @csrf
-                    <div class="input-group mb-1">
-                        <div class="form-floating"> <input id="email_or_phone" type="text" name="email_or_phone" class="form-control" value="" placeholder=""> <label for="loginEmail">Email or Mobile</label> </div>
-                        <div class="input-group-text">
-                             <span class="bi bi-envelope"></span>
-                             <span class="bi bi-phone"></span>
-                         </div>
-                    </div>
-                    @error('email_or_phone')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                    <div class="input-group mb-1">
-                        <div class="form-floating"> <input id="loginPassword" type="password" name="password" class="form-control" placeholder=""> <label for="loginPassword">Password</label> </div>
-                        <div class="input-group-text"> <span class="bi bi-lock-fill"></span> </div>
-                    </div> <!--begin::Row-->
 
-                    @error('password')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                    <div class="row">
-                        <div class="col-8 d-inline-flex align-items-center">
-                            <div class="form-check"> <input class="form-check-input" type="checkbox" name="remember" value="1" id="flexCheckDefault"> <label class="form-check-label" for="flexCheckDefault">
-                                    Remember Me
-                                </label> </div>
-                        </div> <!-- /.col -->
-                        <div class="col-4">
-                            <div class="d-grid gap-2"> <button type="submit" class="btn btn-primary">Sign In</button> </div>
-                        </div> <!-- /.col -->
-                    </div> <!--end::Row-->
-                </form>
-                {{-- <div class="social-auth-links text-center mb-3 d-grid gap-2">
-                    <p>- OR -</p> <a href="#" class="btn btn-primary"> <i class="bi bi-facebook me-2"></i> Sign in using Facebook
-                    </a> <a href="{{route('googleOauthLoad')}}" class="btn btn-danger"> <i class="bi bi-google me-2"></i> Sign in using Google+
-                    </a>
-                </div> --}}
-                 <!-- /.social-auth-links -->
-                <p class="mb-1"> <a href="{{ route('forgetMyPass') }}">I forgot my password</a> </p>
-                <p class="mb-0"> <a href="{{ route('registration') }}" class="text-center">
-                        Register a new membership
-                    </a> </p>
-            </div> <!-- /.login-card-body -->
+
+
+
+        <div class="height-100 d-flex justify-content-center align-items-center">
+            <div class="position-relative">
+                <p class="login-box-msg">Type Email or Mobile</p>
+                <div class="card p-2 text-center">
+                    <h6>Please enter the verification code</h6>
+                    {{-- <div> <span>A code has been sent to</span> <small id="maskedNumber">*******9897</small> </div> --}}
+                    <form action="{{ route('validateUserOtp') }}" method="post">
+                        @csrf
+                        <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
+
+                                <input class="m-2 text-center form-control rounded" type="text" name="otp[]" id="first" required
+                                    maxlength="1" />
+                                <input class="m-2 text-center form-control rounded" type="text" name="otp[]" id="second" required
+                                    maxlength="1" />
+                                <input class="m-2 text-center form-control rounded" type="text" name="otp[]" id="third" required
+                                    maxlength="1" />
+                                <input class="m-2 text-center form-control rounded" type="text" name="otp[]" id="fourth" required
+                                    maxlength="1" />
+                                <input class="m-2 text-center form-control rounded" type="text" name="otp[]" id="fifth" required
+                                    maxlength="1" />
+                                <input class="m-2 text-center form-control rounded" type="text" name="otp[]" id="sixth" required
+                                    maxlength="1" />
+                        </div>
+
+                        <div id="timer" class="mt-3">
+                            <span>Resend OTP in <span id="countdown">3:00</span></span>
+                        </div>
+
+                        <div class="mt-4">
+                            <input type="hidden" name="uuid" value="{{ $user->id ?? '' }}">
+                            <button id="validateBtn" class="btn btn-primary px-4 validate">Validate</button>
+                        </div>
+                    </form>
+                    <div id="resend" class="mt-3" style="display: none;">
+                        <form action="{{ route('userOtpLoad') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="uuid" value="{{ $user->id ?? '' }}">
+                            <button type="submit" class="btn btn-secondary px-4">Resend OTP</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div> <!-- /.login-box --> <!--begin::Third Party Plugin(OverlayScrollbars)-->
+
+
+
+
+    </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.3.0/browser/overlayscrollbars.browser.es6.min.js" integrity="sha256-H2VM7BKda+v2Z4+DRy69uknwxjyDRhszjXFhsL4gD3w=" crossorigin="anonymous"></script> <!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha256-whL0tQWoY1Ku1iskqPFvmZ+CHsvmRWx/PIoEvIeWh4I=" crossorigin="anonymous"></script> <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha256-YMa+wAM6QkVyz999odX7lPRxkoYAan8suedu4k2Zur8=" crossorigin="anonymous"></script> <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
     <script src="{{asset('js/adminlte.js')}}"></script> <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="{{ asset('js/otp.js') }}"></script>
     <script>
         const SELECTOR_SIDEBAR_WRAPPER = ".sidebar-wrapper";
         const Default = {
@@ -98,7 +101,6 @@
             }
         });
     </script> <!--end::OverlayScrollbars Configure--> <!--end::Script-->
-</body><!--end::Body-->
 
 <script>
     @if (Session::has('message'))
@@ -125,8 +127,31 @@
 
                 toastr.options.timeOut = 5000;
                 toastr.error("{{ Session::get('message') }}");
+                s
                 break;
         }
     @endif
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let timer = @json(config('app.otp_time_count')); // 3 minutes in seconds
+        const countdownElement = document.getElementById('countdown');
+        const resendDiv = document.getElementById('resend');
+        const timerInterval = setInterval(function() {
+            const minutes = Math.floor(timer / 60);
+            const seconds = timer % 60;
+            countdownElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            timer--;
+
+            if (timer < 0) {
+                clearInterval(timerInterval);
+                document.getElementById('timer').style.display = 'none';
+                resendDiv.style.display = 'block';
+            }
+        }, 1000);
+    });
+</script>
+</body><!--end::Body-->
+
 </html>
