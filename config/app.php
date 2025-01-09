@@ -66,6 +66,7 @@ return [
     */
 
     'timezone' => env('APP_TIMEZONE', 'UTC'),
+    'otp_time_count' => env('OTP_TIME_COUNT', 150),
 
     /*
     |--------------------------------------------------------------------------

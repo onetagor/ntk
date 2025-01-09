@@ -10,9 +10,13 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'home'])->name('hom
 
 Route::get('login', [App\Http\Controllers\HomeController::class, 'login'])->name('login');
 Route::post('validate/login', [App\Http\Controllers\HomeController::class, 'validateLogin'])->name('loginCheck');
-// Route::get('/logout', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/register', [App\Http\Controllers\HomeController::class, 'registration'])->name('registration');
 Route::post('store/register', [App\Http\Controllers\HomeController::class, 'storRegistration'])->name('storRegistration');
+Route::get('forget/password', [App\Http\Controllers\HomeController::class, 'loadForgetMyPass'])->name('forgetMyPass');
+Route::post('user/check', [App\Http\Controllers\HomeController::class, 'searchUser'])->name('searchUser');
+Route::match(['get', 'post'], 'user/load/otp', [HomeController::class, 'userOtpLoad'])->name('userOtpLoad');
+Route::post('validate/user/otp', [HomeController::class, 'validateUserOtp'])->name('validateUserOtp');
+Route::post('update/user/pass', [HomeController::class, 'updateUserPassword'])->name('updateUserPassword');
 
 // socialite
 
