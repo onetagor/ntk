@@ -18,7 +18,7 @@ class RoleController extends Controller
     public function roleIndex(Request $request)
     {
         $limit = $request->limit ?? 20;
-        $datas = Role::orderBy('id','desc')
+        $datas = Role::orderBy('id','desc')->where('name','!=','SuperAdmin')
                     ->when($request->search, function($query) use ($request){
                         $query->where('name','like','%'.$request->search.'%');
                     })
@@ -113,7 +113,7 @@ class RoleController extends Controller
         ]);
         $permissionName = Permission::whereIn('id',$request->permission_list)->pluck('name');
         $role = Role::find($role->id);
-       
+
         if (!empty($role) &&  $role != null) {
             $role->syncPermissions($permissionName);
             $toaster = [
