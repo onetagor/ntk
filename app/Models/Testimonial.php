@@ -11,8 +11,8 @@ class Testimonial extends Model
 
     protected $fillable = [
         'name',
-        'designation',
-        'review',
+        'position',
+        'comment',
         'image',
         'rating',
         'order',
@@ -20,12 +20,11 @@ class Testimonial extends Model
     ];
 
     protected $casts = [
-        'status' => 'boolean',
         'rating' => 'integer',
     ];
 
     public function scopeActive($query)
     {
-        return $query->where('status', 1)->orderBy('order');
+        return $query->where('status', 'active')->orderBy('order');
     }
 }

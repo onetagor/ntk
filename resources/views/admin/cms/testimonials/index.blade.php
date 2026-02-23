@@ -71,8 +71,8 @@
                                         @endfor
                                     </td>
                                     <td>
-                                        <span class="badge {{ $testimonial->status ? 'bg-success' : 'bg-danger' }}">
-                                            {{ $testimonial->status ? 'Active' : 'Inactive' }}
+                                        <span class="badge {{ $testimonial->status == 'active' ? 'bg-success' : 'bg-danger' }}">
+                                            {{ ucfirst($testimonial->status) }}
                                         </span>
                                     </td>
                                     <td>

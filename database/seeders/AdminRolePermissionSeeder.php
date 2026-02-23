@@ -90,6 +90,13 @@ class AdminRolePermissionSeeder extends Seeder
             'newsletters.view',
             'newsletters.delete',
             'newsletters.export',
+            
+            // Orders Management
+            'orders.view',
+            'orders.create',
+            'orders.edit',
+            'orders.delete',
+            'orders.update-status',
         ];
 
         foreach ($permissions as $permission) {

@@ -22,6 +22,18 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
+                @if($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Validation Error!</strong> Please fix the following issues:
+                        <ul class="mb-0 mt-2">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
+                
                 <div class="card card-primary card-outline">
                     <form action="{{ route('admin.testimonials.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -91,8 +103,8 @@
                                     <div class="mb-3">
                                         <label for="status" class="form-label">Status</label>
                                         <select class="form-control" id="status" name="status">
-                                            <option value="1" {{ old('status', 1) == 1 ? 'selected' : '' }}>Active</option>
-                                            <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Inactive</option>
+                                            <option value="active" {{ old('status', 'active') == 'active' ? 'selected' : '' }}>Active</option>
+                                            <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
                                         </select>
                                     </div>
                                 </div>

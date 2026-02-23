@@ -353,11 +353,11 @@
                         <img src="{{ asset('assets/img/client_' . (($index % 2) + 2) . '.jpg') }}" alt="{{ $testimonial->name }}" class="w-24 h-24 rounded-full mx-auto mb-6 border-4 border-green-500">
                     @endif
                     <h4 class="text-xl font-bold mb-2">{{ $testimonial->name }}</h4>
-                    @if($testimonial->designation)
-                        <p class="text-sm text-green-400 mb-4">{{ $testimonial->designation }}</p>
+                    @if($testimonial->position)
+                        <p class="text-sm text-green-400 mb-4">{{ $testimonial->position }}</p>
                     @endif
                     <p class="text-lg leading-relaxed max-w-3xl mx-auto mb-4">
-                        {{ $testimonial->review }}
+                        {{ $testimonial->comment }}
                     </p>
                 </div>
                 @empty

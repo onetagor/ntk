@@ -194,29 +194,29 @@ class CMSSeeder extends Seeder
         // Testimonials
         Testimonial::create([
             'name' => 'Leslie Tunner',
-            'designation' => 'Customer',
-            'review' => 'we have used cleanifer cleaning services for the past 4 years and found them to be very reliable and efficient and getting themselves available at quick notice and able to fit in with our demands. we suggest cleanifer cleaning services to all our clients.',
+            'position' => 'Customer',
+            'comment' => 'we have used cleanifer cleaning services for the past 4 years and found them to be very reliable and efficient and getting themselves available at quick notice and able to fit in with our demands. we suggest cleanifer cleaning services to all our clients.',
             'rating' => 5,
             'order' => 1,
-            'status' => 1,
+            'status' => 'active',
         ]);
 
         Testimonial::create([
             'name' => 'John Smith',
-            'designation' => 'Business Owner',
-            'review' => 'Cleanifer is the best cleaning service in the world. They are very professional and they are very friendly. I would recommend them to anyone who needs quality cleaning services.',
+            'position' => 'Business Owner',
+            'comment' => 'Cleanifer is the best cleaning service in the world. They are very professional and they are very friendly. I would recommend them to anyone who needs quality cleaning services.',
             'rating' => 5,
             'order' => 2,
-            'status' => 1,
+            'status' => 'active',
         ]);
 
         Testimonial::create([
             'name' => 'Sarah Johnson',
-            'designation' => 'Office Manager',
-            'review' => 'Amazing service! Cleanifer has transformed our office environment. Their attention to detail and consistent quality has made them our go-to cleaning service for over 3 years.',
+            'position' => 'Office Manager',
+            'comment' => 'Amazing service! Cleanifer has transformed our office environment. Their attention to detail and consistent quality has made them our go-to cleaning service for over 3 years.',
             'rating' => 5,
             'order' => 3,
-            'status' => 1,
+            'status' => 'active',
         ]);
     }
 }

@@ -24,14 +24,14 @@ class TestimonialController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'designation' => 'nullable|string|max:255',
-            'review' => 'required|string',
+            'position' => 'nullable|string|max:255',
+            'comment' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'rating' => 'nullable|integer|min:1|max:5',
-            'order' => 'nullable|integer',
+            'rating' => 'required|integer|min:1|max:5',
+            'status' => 'required|in:active,inactive',
         ]);
 
-        $data = $request->all();
+        $data = $request->only(['name', 'position', 'comment', 'rating', 'status']);
         
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('testimonials', 'public');
@@ -51,14 +51,14 @@ class TestimonialController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'designation' => 'nullable|string|max:255',
-            'review' => 'required|string',
+            'position' => 'nullable|string|max:255',
+            'comment' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'rating' => 'nullable|integer|min:1|max:5',
-            'order' => 'nullable|integer',
+            'rating' => 'required|integer|min:1|max:5',
+            'status' => 'required|in:active,inactive',
         ]);
 
-        $data = $request->all();
+        $data = $request->only(['name', 'position', 'comment', 'rating', 'status']);
         
         if ($request->hasFile('image')) {
             if ($testimonial->image) {
