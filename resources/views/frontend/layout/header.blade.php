@@ -1,62 +1,27 @@
-
-<!-- Navigation -->
-<nav id="navbar" class="navbar navbar-expand-lg fixed-top navbar-dark" aria-label="Main navigation">
-    <div class="container">
-
-        <!-- Image Logo -->
-        <!-- <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a> -->
-
-        <!-- Text Logo - Use this if you don't have a graphic logo -->
-        <a class="navbar-brand logo-text" href="index.html">Mirko</a>
-
-        <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault" >
-            <ul class="navbar-nav ms-auto navbar-nav-scroll">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#header">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#about">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#services">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#plans">Plans</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false" href="#">Drop</a>
-                    
-                    <ul class="dropdown-menu" aria-labelledby="dropdown01">
-                        <li><a class="dropdown-item" href="article.html">Article Details</a></li>
-                        <li><div class="dropdown-divider"></div></li>
-                        <li><a class="dropdown-item" href="terms.html">Terms Conditions</a></li>
-                        <li><div class="dropdown-divider"></div></li>
-                        <li><a class="dropdown-item" href="privacy.html">Privacy Policy</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#contact">Contact</a>
-                </li>
-            </ul>
-            <span class="nav-item social-icons">
-                <span class="fa-stack">
-                    <a href="#your-link">
-                        <i class="fas fa-circle fa-stack-2x"></i>
-                        <i class="fab fa-facebook-f fa-stack-1x"></i>
-                    </a>
-                </span>
-                <span class="fa-stack">
-                    <a href="#your-link">
-                        <i class="fas fa-circle fa-stack-2x"></i>
-                        <i class="fab fa-twitter fa-stack-1x"></i>
-                    </a>
-                </span>
-            </span>
-        </div> <!-- end of navbar-collapse -->
-    </div> <!-- end of container -->
-</nav> <!-- end of navbar -->
-<!-- end of navigation -->
+{{-- HEADER --}}
+<header class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-5 flex justify-between items-center">
+        {{-- Logo --}}
+        <a href="{{ route('home') }}">
+            <img src="{{ asset('assets/img/ntk-logo.jpg') }}" alt="Cleanifer Logo" class="h-10">
+        </a>
+        
+        {{-- Desktop Navigation --}}
+        <nav class="hidden md:flex space-x-6 font-medium uppercase text-sm">
+            <a href="#home" class="hover:text-green-500 transition duration-300">Home</a>
+            <a href="#about" class="hover:text-green-500 transition duration-300">About</a>
+            <a href="#services" class="hover:text-green-500 transition duration-300">Services</a>
+            
+            <a href="#packages" class="hover:text-green-500 transition duration-300">Gallery</a>
+            <a href="#blog" class="hover:text-green-500 transition duration-300">Blog</a>
+            
+            <a href="#testimonial" class="hover:text-green-500 transition duration-300">Testimonial</a>
+            <a href="#newsletter" class="hover:text-green-500 transition duration-300">Contact</a>
+        </nav>
+        
+        {{-- Mobile Menu Button (Optional - Add if needed) --}}
+        {{-- <button class="md:hidden">
+            <i class="fas fa-bars text-2xl"></i>
+        </button> --}}
+    </div>
+</header>

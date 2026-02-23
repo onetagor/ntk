@@ -86,63 +86,126 @@ class AdminController extends Controller
 
     public function adminValidateLogin(Request $request)
     {
-
-        $countryIso = Country::where('id',18)->first();
-
+        // dd($request->all());
         $validated = $request->validate([
-            'email_or_phone' => ['bail','required'],
-            'password' => 'required',
-            ],
-            [
-                'email_or_phone.regex' => 'The phone number must contain only English digits (0-9).',
-                'email_or_phone.required' => 'The phone number is required',
-            ]
-        );
+            'email_or_phone' => ['required', 'string'],
+            'password' => ['required', 'string'],
+        ]);
 
+        // Check if input is email format
         if (filter_var($request->email_or_phone, FILTER_VALIDATE_EMAIL)) {
-
-            $credential = array("email" => $request->email_or_phone, "password" => $request->password);
-        }
-        else
-        {
-            $phoneNumber = validationMobileNumber($request->email_or_phone,$countryIso->iso);
-            $credential = array("phone" => $phoneNumber, "password" => $request->password);
+            $credential = [
+                'email' => $request->email_or_phone, 
+                'password' => $request->password
+            ];
+        } else {
+            // Try phone number login
+            try {
+                $countryIso = Country::where('id', 18)->first();
+                if ($countryIso) {
+                    $phoneNumber = validationMobileNumber($request->email_or_phone, $countryIso->iso);
+                    $credential = [
+                        'phone' => $phoneNumber, 
+                        'password' => $request->password
+                    ];
+                } else {
+                    // If country not found, treat as phone directly
+                    $credential = [
+                        'phone' => $request->email_or_phone, 
+                        'password' => $request->password
+                    ];
+                }
+            } catch (\Exception $e) {
+                // If validation fails, try direct phone number
+                $credential = [
+                    'phone' => $request->email_or_phone, 
+                    'password' => $request->password
+                ];
+            }
         }
 
         if (Auth::guard('admin')->attempt($credential)) {
-
             $user = Auth::guard('admin')->user();
 
-            if (($user->status == 0)) {
-
-                $toster = array(
-                    'message' => 'This account is in black listed',
+            if ($user->status == 0) {
+                $toster = [
+                    'message' => 'This account is blacklisted',
                     'alert-type' => 'error'
-                );
+                ];
 
-                return back()->with( $toster);
-            } else {
-
-                return redirect()->route('admin.dashboard');
+                Auth::guard('admin')->logout();
+                return back()->with($toster);
             }
 
+            return redirect()->route('admin.dashboard');
         }
 
+        $toster = [
+            'message' => 'Wrong credentials. Please check your email/phone and password.',
+            'alert-type' => 'error'
+        ];
 
-        else
-        {
-            $toster = array(
-                'message' => 'Wrong Credential',
-                'alert-type' => 'error'
-            );
-
-            return back()->with( $toster);
-
-        }
+        return back()->with($toster)->withInput($request->only('email_or_phone'));
     }
     public function dashboard()
     {
-        return view('admin.dashboard');
+        // Get statistics
+        $totalOrders = \App\Models\Order::count();
+        $pendingOrders = \App\Models\Order::where('status', 'pending')->count();
+        $completedOrders = \App\Models\Order::where('status', 'completed')->count();
+        $totalRevenue = \App\Models\Order::where('payment_status', 'paid')->sum('package_price');
+        
+        $totalPackages = \App\Models\Package::count();
+        $activePackages = \App\Models\Package::where('status', true)->count();
+        
+        $totalUsers = \App\Models\User::count();
+        $newsletterSubscribers = \App\Models\Newsletter::count();
+        
+        // Get recent orders
+        $recentOrders = \App\Models\Order::with('package')
+            ->latest()
+            ->take(10)
+            ->get();
+        
+        // Get order status breakdown
+        $ordersByStatus = [
+            'pending' => \App\Models\Order::where('status', 'pending')->count(),
+            'confirmed' => \App\Models\Order::where('status', 'confirmed')->count(),
+            'in_progress' => \App\Models\Order::where('status', 'in_progress')->count(),
+            'completed' => \App\Models\Order::where('status', 'completed')->count(),
+            'cancelled' => \App\Models\Order::where('status', 'cancelled')->count(),
+        ];
+        
+        // Get payment status breakdown
+        $paymentStats = [
+            'paid' => \App\Models\Order::where('payment_status', 'paid')->count(),
+            'unpaid' => \App\Models\Order::where('payment_status', 'unpaid')->count(),
+            'refunded' => \App\Models\Order::where('payment_status', 'refunded')->count(),
+        ];
+        
+        // Get monthly revenue data for chart (last 6 months)
+        $monthlyRevenue = \App\Models\Order::where('payment_status', 'paid')
+            ->selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, SUM(package_price) as total')
+            ->whereRaw('created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)')
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->get();
+        
+        return view('admin.dashboard', compact(
+            'totalOrders',
+            'pendingOrders',
+            'completedOrders',
+            'totalRevenue',
+            'totalPackages',
+            'activePackages',
+            'totalUsers',
+            'newsletterSubscribers',
+            'recentOrders',
+            'ordersByStatus',
+            'paymentStats',
+            'monthlyRevenue'
+        ));
     }
 
 

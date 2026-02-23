@@ -1,0 +1,62 @@
+/* Custom Styles for Cleanifer */
+
+/* Hero Slider Styles */
+.slider {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+}
+
+/* Testimonial Slider Styles */
+.testimonial-slider {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.testimonial-slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.testimonial-slide {
+    min-width: 100%;
+}
+
+.testimonial-dot.active {
+    background-color: #10b981 !important;
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom Hover Effects */
+a {
+    transition: all 0.3s ease;
+}
+
+button {
+    transition: all 0.3s ease;
+}
+
+/* Additional Responsive Fixes */
+@media (max-width: 768px) {
+    .slide h2 {
+        font-size: 2rem;
+    }
+    
+    .slide p {
+        font-size: 0.95rem;
+    }
+}

@@ -7,6 +7,14 @@ use App\Models\Country;
 use App\Models\Gender;
 use App\Models\User;
 use App\Models\UserDetail;
+use App\Models\Slider;
+use App\Models\Service;
+use App\Models\Package;
+use App\Models\Statistic;
+use App\Models\Blog;
+use App\Models\Testimonial;
+use App\Models\Newsletter;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Propaganistas\LaravelPhone\Rules\Phone;
@@ -24,8 +32,23 @@ class HomeController extends Controller
 
     public function home(Request $request)
     {
+        $sliders = Slider::active()->get();
+        $services = Service::active()->get();
+        $packages = Package::active()->get();
+        $statistics = Statistic::active()->get();
+        $blogs = Blog::active()->latest()->take(2)->get();
+        $testimonials = Testimonial::active()->get();
+        $siteSetting = SiteSetting::first();
 
-        return view('frontend.pages.home');
+        return view('frontend.pages.home', compact(
+            'sliders',
+            'services',
+            'packages',
+            'statistics',
+            'blogs',
+            'testimonials',
+            'siteSetting'
+        ));
     }
 
     public function dashboard(Request $request)
@@ -412,5 +435,24 @@ class HomeController extends Controller
         );
 
         return redirect()->route('login')->with($toster);
+    }
+
+    public function newsletterSubscribe(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|unique:newsletters,email'
+        ]);
+
+        Newsletter::create([
+            'email' => $request->email,
+            'status' => 1
+        ]);
+        
+        $toster = array(
+            'message' => 'Successfully subscribed to our newsletter!',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($toster);
     }
 }

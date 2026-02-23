@@ -1,0 +1,50 @@
+CLEANIFER - REQUIRED IMAGES
+============================
+
+Please add the following images to this directory (public/img/):
+
+LOGOS:
+- ntk-logo.jpg (Your main logo)
+
+HERO SECTION:
+- home_hero_bg.jpg (Hero section background)
+
+ABOUT SECTION:
+- title-bottom.png (Decorative title underline)
+- title_left.png (Decorative title left icon)
+- services_1.jpg (About us main image)
+- specials_icon.png (Icon for specials list items)
+
+SERVICES SECTION:
+- home_service_1.png (Home cleaning icon)
+- home_service_2.png (One time clean icon)
+- home_service_3.png (Office cleaning icon)
+- home_service_4.png (Move-in/Move-out icon)
+- home_services_brush.png (Central decorative image)
+
+OFFER SECTION:
+- home_offer_bg.jpg (Offer banner background)
+
+STATS/COUNTER SECTION:
+- home_counter_bg.jpg (Counter section background)
+- counter_icon_1.png (Customers icon)
+- counter_icon_2.png (Projects icon)
+- counter_icon_3.png (Staff icon)
+- counter_icon_4.png (Guarantee icon)
+
+BLOG SECTION:
+- blog_img_1.jpg (Blog post 1 image)
+- blog_img_8.jpg (Blog post 2 image)
+
+TESTIMONIAL SECTION:
+- home_testimonial_bg.jpg (Testimonial section background)
+- client_2.jpg (Client photo 1)
+- client_3.jpg (Client photo 2)
+
+FOOTER/NEWSLETTER SECTION:
+- newsletter_bg.jpg (Newsletter section background)
+- footer_bg.jpg (Footer background)
+
+NOTE:
+All images should be optimized for web (compressed) to ensure fast loading times.
+Recommended dimensions can vary based on your design needs, but hero images should be at least 1920px wide.

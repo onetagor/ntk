@@ -23,6 +23,15 @@ Route::post('update/user/pass', [HomeController::class, 'updateUserPassword'])->
 Route::get('google/oauth/load', [App\Http\Controllers\HomeController::class, 'googleOauthLoad'])->name('googleOauthLoad');
 Route::get('google/auth/callback', [App\Http\Controllers\HomeController::class, 'googleOauthCallBack'])->name('googleOauthCallBack');
 
+// Newsletter
+Route::post('newsletter/subscribe', [App\Http\Controllers\HomeController::class, 'newsletterSubscribe'])->name('newsletter.subscribe');
+
+// Order Routes
+Route::prefix('order')->group(function () {
+    Route::get('create/{package}', [App\Http\Controllers\Frontend\OrderController::class, 'create'])->name('order.create');
+    Route::post('store', [App\Http\Controllers\Frontend\OrderController::class, 'store'])->name('order.store');
+    Route::get('success/{orderNumber}', [App\Http\Controllers\Frontend\OrderController::class, 'success'])->name('order.success');
+});
 
 
 

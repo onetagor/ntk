@@ -1,11 +1,11 @@
+{{-- Tailwind CSS CDN --}}
+<script src="https://cdn.tailwindcss.com"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+{{-- Font Awesome --}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" 
+      integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" 
+      crossorigin="anonymous" 
+      referrerpolicy="no-referrer" />
 
-<link rel="stylesheet" href="{{asset('frontend/css/bootstrap.min.css')}}">
-<link href="{{asset('frontend/css/fontawesome-all.min.css')}}" rel="stylesheet">
-<link href="{{asset('frontend/css/aos.min.css')}}" rel="stylesheet">
-<link href="{{asset('frontend/css/swiper.css')}}" rel="stylesheet">
-<link href="{{asset('frontend/css/style.css')}}" rel="stylesheet">
-
-<!-- Favicon -->
-<link rel="icon" href="{{asset('frontend/assets/images/favicon.png')}}">
+{{-- Custom CSS --}}
+<link href="{{ asset('frontend/css/custom.css') }}" rel="stylesheet">
