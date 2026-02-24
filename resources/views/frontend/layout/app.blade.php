@@ -7,8 +7,8 @@
 </head>
 <body class="text-gray-700 font-sans">
 
-    {{-- Top Info Bar --}}
-    <div class="bg-blue-600 text-white text-sm">
+    {{-- Top Info Bar (Hidden on Mobile) --}}
+    <div class="hidden md:block bg-blue-600 text-white text-sm">
         <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between flex-wrap gap-2">
             <span>{{ $siteSetting->working_hours ?? '10:00am - 10:00pm Mon - Sun' }}</span>
             <div class="space-x-4">
