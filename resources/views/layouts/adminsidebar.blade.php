@@ -121,6 +121,13 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{ route('admin.contacts.index') }}" class="nav-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-envelope-fill"></i>
+                        <p>Contact Messages</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="{{ route('admin.newsletters.index') }}" class="nav-link {{ request()->routeIs('admin.newsletters.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-envelope-fill"></i>
                         <p>Newsletters</p>

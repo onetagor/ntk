@@ -25,6 +25,7 @@ Route::get('google/auth/callback', [App\Http\Controllers\HomeController::class, 
 
 // Newsletter
 Route::post('newsletter/subscribe', [App\Http\Controllers\HomeController::class, 'newsletterSubscribe'])->name('newsletter.subscribe');
+Route::post('contact', [App\Http\Controllers\HomeController::class, 'contactMessageSend'])->name('contact.submit');
 
 // Order Routes
 Route::prefix('order')->group(function () {

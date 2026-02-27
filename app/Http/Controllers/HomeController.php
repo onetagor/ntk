@@ -15,6 +15,7 @@ use App\Models\Blog;
 use App\Models\Testimonial;
 use App\Models\Newsletter;
 use App\Models\SiteSetting;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Propaganistas\LaravelPhone\Rules\Phone;
@@ -450,6 +451,31 @@ class HomeController extends Controller
         
         $toster = array(
             'message' => 'Successfully subscribed to our newsletter!',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($toster);
+    }
+
+    public function contactMessageSend(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|string|max:20',
+            'message' => 'required|string|max:5000',
+        ]);
+
+        Contact::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'message' => $request->message,
+            'status' => 'pending'
+        ]);
+
+        $toster = array(
+            'message' => 'Your message has been sent successfully! We will contact you soon.',
             'alert-type' => 'success'
         );
 

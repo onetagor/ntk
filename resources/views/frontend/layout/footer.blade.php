@@ -1,6 +1,98 @@
 {{-- NEWSLETTER SECTION --}}
 <section id="newsletter" class="py-20 text-center relative" style="background-image: url('{{ asset('assets/img/newsletter_bg.jpg') }}'); background-size: cover; background-position: center;">
     <div class="absolute inset-0 bg-white bg-opacity-90"></div>
+    <div class="relative max-w-4xl mx-auto px-4 py-20">
+        <h3 class="text-sm font-semibold text-green-500 mb-2 tracking-widest">CONTACT US</h3>
+        <div>
+            <img src="{{ asset('assets/img/title-bottom.png') }}" alt="Cleanifer Logo" class="mx-auto mb-4">
+        </div>
+        <div class="flex items-center justify-center mb-8">
+            <img src="{{ asset('assets/img/title_left.png') }}" alt="Title Left" class="mr-4">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">CONTACT US BY PHONE, EMAIL OR USING THE FORM BELOW</h1>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            {{-- Company Information (Left Side) --}}
+            <div class="bg-white rounded-lg shadow-lg p-8 text-left">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">NTK Pro-Services Oy</h2>
+                
+                <div class="space-y-4 text-gray-700">
+                    <div>
+                        <p class="font-semibold text-green-600 mb-1">Y-tunnus (Business ID):</p>
+                        <p>3373611-4</p>
+                    </div>
+                    
+                    <div>
+                        <p class="font-semibold text-green-600 mb-1">
+                            <i class="fas fa-map-marker-alt mr-2"></i>Address:
+                        </p>
+                        <p>Nõlvakiie 8 M 09</p>
+                        <p>01600 Vantaa</p>
+                    </div>
+                    
+                    <div>
+                        <p class="font-semibold text-green-600 mb-1">
+                            <i class="fas fa-phone mr-2"></i>Phone:
+                        </p>
+                        <p>{{ siteSetting('phone', '+358 XX XXX XXXX') }}</p>
+                    </div>
+                    
+                    <div>
+                        <p class="font-semibold text-green-600 mb-1">
+                            <i class="fas fa-envelope mr-2"></i>Email:
+                        </p>
+                        <p>{{ siteSetting('email', 'info@ntkproservices.fi') }}</p>
+                    </div>
+                    
+                    <div>
+                        <p class="font-semibold text-green-600 mb-1">Contact Persons:</p>
+                        <p>Bappy Mahudun</p>
+                        <p>Mohammad Mahsin</p>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Contact Form (Right Side) --}}
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <form action="{{ route('contact.submit') }}" method="POST" class="space-y-6">
+                    @csrf
+                    <input 
+                        type="text" 
+                        name="name"
+                        placeholder="Your Name"
+                        class="w-full px-6 py-4 text-gray-700 border border-gray-300 rounded-full focus:outline-none focus:border-green-500"
+                        required
+                    >
+                    <input 
+                        type="email" 
+                        name="email"
+                        placeholder="Your Email Address"
+                        class="w-full px-6 py-4 text-gray-700 border border-gray-300 rounded-full focus:outline-none focus:border-green-500"
+                        required
+                    >
+                    <input 
+                        type="tel" 
+                        name="phone"
+                        placeholder="Your Phone Number"
+                        class="w-full px-6 py-4 text-gray-700 border border-gray-300 rounded-full focus:outline-none focus:border-green-500"
+                    >
+                    <textarea 
+                        name="message" 
+                        rows="5" 
+                        placeholder="Your Message"
+                        class="w-full px-6 py-4 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 resize-none"
+                        required
+                    ></textarea>
+                    <button type="submit" class="w-full bg-green-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-green-600 transition duration-300">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+
+    </div>
+
     <div class="relative max-w-4xl mx-auto px-4">
         
         <h3 class="text-sm font-semibold text-green-500 mb-2 tracking-widest">OUR NEWSLETTER</h3>
@@ -40,7 +132,7 @@
         
         {{-- Logo --}}
         <div class="mb-8">
-            <img src="{{ asset('assets/img/ntk-logo.jpg') }}" alt="Cleanifer Logo" class="h-16 mx-auto">
+            <img src="{{ asset('assets/img/ntk-logo.jpeg') }}" alt="Cleanifer Logo" class="h-20 mx-auto">
         </div>
 
         {{-- Navigation Menu --}}

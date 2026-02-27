@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\AdminManagementController;
 use App\Http\Controllers\Admin\RoleManagementController;
+use App\Http\Controllers\Admin\ContactController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -108,6 +109,14 @@ Route::prefix('admin')->group(function () {
         Route::get('newsletters', [NewsletterController::class, 'index'])->name('admin.newsletters.index');
         Route::delete('newsletters/{newsletter}', [NewsletterController::class, 'destroy'])->name('admin.newsletters.destroy');
         Route::get('newsletters/export', [NewsletterController::class, 'export'])->name('admin.newsletters.export');
+
+        // Contact Messages
+        Route::get('contacts', [ContactController::class, 'index'])->name('admin.contacts.index');
+        Route::get('contacts/{contact}', [ContactController::class, 'show'])->name('admin.contacts.show');
+        Route::post('contacts/{contact}/reply', [ContactController::class, 'reply'])->name('admin.contacts.reply');
+        Route::patch('contacts/{contact}/update-status', [ContactController::class, 'updateStatus'])->name('admin.contacts.update-status');
+        Route::delete('contacts/{contact}', [ContactController::class, 'destroy'])->name('admin.contacts.destroy');
+        Route::get('contacts-export', [ContactController::class, 'export'])->name('admin.contacts.export');
 
         // Admin Management
         Route::resource('admins', AdminManagementController::class)->except(['show'])->names([

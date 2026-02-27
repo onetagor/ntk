@@ -116,3 +116,14 @@ if (! function_exists('validationMobileNumber')) {
         return true;
     }
    }
+
+   if (! function_exists('siteSetting')) {
+    function siteSetting($key, $default = null)
+    {
+        $setting = \App\Models\SiteSetting::first();
+        if ($setting && isset($setting->$key)) {
+            return $setting->$key;
+        }
+        return $default;
+    }
+   }

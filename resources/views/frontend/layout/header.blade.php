@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-4 py-5 flex justify-between items-center">
         {{-- Logo --}}
         <a href="{{ route('home') }}">
-            <img src="{{ asset('assets/img/ntk-logo.jpg') }}" alt="Cleanifer Logo" class="h-10">
+            <img src="{{ asset('assets/img/ntk-logo.jpeg') }}" alt="Cleanifer Logo" class="h-20">
         </a>
         
         {{-- Desktop Navigation --}}
