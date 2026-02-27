@@ -43,7 +43,7 @@
 {{-- ABOUT US --}}
 <section id="about" class="py-20">
     <div class="max-w-7xl mx-auto px-4 text-center mb-12">
-        <h3 class="text-sm font-semibold text-blue-600 mb-2">ABOUT US</h3>
+        <h3 class="text-sm font-semibold text-green-500 mb-2">ABOUT US</h3>
         <div>
             <img src="{{ asset('assets/img/title-bottom.png') }}" alt="Cleanifer Logo" class="mx-auto mb-4">
         </div>
