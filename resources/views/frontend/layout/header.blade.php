@@ -8,13 +8,13 @@
         
         {{-- Desktop Navigation --}}
         <nav class="hidden md:flex space-x-6 font-medium uppercase text-sm">
-            <a href="#home" class="hover:text-green-500 transition duration-300">Home</a>
-            <a href="#about" class="hover:text-green-500 transition duration-300">About</a>
-            <a href="#services" class="hover:text-green-500 transition duration-300">Services</a>
-            <a href="#packages" class="hover:text-green-500 transition duration-300">Gallery</a>
-            <a href="#blog" class="hover:text-green-500 transition duration-300">Blog</a>
-            <a href="#testimonial" class="hover:text-green-500 transition duration-300">Testimonial</a>
-            <a href="#newsletter" class="hover:text-green-500 transition duration-300">Contact</a>
+            <a href="{{ route('home') }}#home" class="hover:text-green-500 transition duration-300">Home</a>
+            <a href="{{ route('home') }}#about" class="hover:text-green-500 transition duration-300">About</a>
+            <a href="{{ route('home') }}#services" class="hover:text-green-500 transition duration-300">Services</a>
+            <a href="{{ route('home') }}#packages" class="hover:text-green-500 transition duration-300">Gallery</a>
+            <a href="{{ route('home') }}#blog" class="hover:text-green-500 transition duration-300">Blog</a>
+            <a href="{{ route('home') }}#testimonial" class="hover:text-green-500 transition duration-300">Testimonial</a>
+            <a href="{{ route('home') }}#newsletter" class="hover:text-green-500 transition duration-300">Contact</a>
         </nav>
         
         {{-- Mobile Menu Button --}}
@@ -26,13 +26,13 @@
     {{-- Mobile Navigation Menu --}}
     <nav id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col space-y-4 font-medium uppercase text-sm">
-            <a href="#home" class="hover:text-green-500 transition duration-300 py-2">Home</a>
-            <a href="#about" class="hover:text-green-500 transition duration-300 py-2">About</a>
-            <a href="#services" class="hover:text-green-500 transition duration-300 py-2">Services</a>
-            <a href="#packages" class="hover:text-green-500 transition duration-300 py-2">Gallery</a>
-            <a href="#blog" class="hover:text-green-500 transition duration-300 py-2">Blog</a>
-            <a href="#testimonial" class="hover:text-green-500 transition duration-300 py-2">Testimonial</a>
-            <a href="#newsletter" class="hover:text-green-500 transition duration-300 py-2">Contact</a>
+            <a href="{{ route('home') }}#home" class="hover:text-green-500 transition duration-300 py-2">Home</a>
+            <a href="{{ route('home') }}#about" class="hover:text-green-500 transition duration-300 py-2">About</a>
+            <a href="{{ route('home') }}#services" class="hover:text-green-500 transition duration-300 py-2">Services</a>
+            <a href="{{ route('home') }}#packages" class="hover:text-green-500 transition duration-300 py-2">Gallery</a>
+            <a href="{{ route('home') }}#blog" class="hover:text-green-500 transition duration-300 py-2">Blog</a>
+            <a href="{{ route('home') }}#testimonial" class="hover:text-green-500 transition duration-300 py-2">Testimonial</a>
+            <a href="{{ route('home') }}#newsletter" class="hover:text-green-500 transition duration-300 py-2">Contact</a>
         </div>
     </nav>
 </header>
