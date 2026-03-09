@@ -56,6 +56,19 @@ class OrderController extends Controller
 
             DB::commit();
 
+            // Send order confirmation email
+            try {
+                $successUrl = route('order.success', $order->order_number);
+                \Mail::to($order->customer_email)->send(new \App\Mail\OrderConfirmation($order, $successUrl));
+                
+                // Send notification to admin
+                $adminEmail = config('mail.admin_email', env('ADMIN_EMAIL', 'admin@example.com'));
+                \Mail::to($adminEmail)->send(new \App\Mail\OrderConfirmation($order, route('admin.orders.show', $order)));
+            } catch (\Exception $e) {
+                // Log email error but don't fail the order
+                \Log::error('Order confirmation email failed: ' . $e->getMessage());
+            }
+
             return redirect()->route('order.success', $order->order_number)
                 ->with('success', 'Your order has been placed successfully!');
 

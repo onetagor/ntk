@@ -19,8 +19,12 @@ class SiteSettingController extends Controller
     {
         $request->validate([
             'site_name' => 'required|string|max:255',
+            'business_id' => 'nullable|string|max:50',
             'phone' => 'nullable|string|max:20',
+            'phone_2' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
+            'contact_person_1' => 'nullable|string|max:255',
+            'contact_person_2' => 'nullable|string|max:255',
             'site_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'about_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);

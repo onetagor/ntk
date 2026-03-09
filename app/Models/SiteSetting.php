@@ -12,9 +12,13 @@ class SiteSetting extends Model
     protected $fillable = [
         'site_name',
         'site_logo',
+        'business_id',
         'phone',
+        'phone_2',
         'email',
         'address',
+        'contact_person_1',
+        'contact_person_2',
         'working_hours',
         'facebook_url',
         'twitter_url',

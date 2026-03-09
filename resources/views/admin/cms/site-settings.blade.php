@@ -42,6 +42,18 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
+                                        <label for="business_id" class="form-label">Business ID (Y-tunnus)</label>
+                                        <input type="text" class="form-control" 
+                                               id="business_id" name="business_id" 
+                                               value="{{ old('business_id', $setting->business_id ?? '') }}"
+                                               placeholder="e.g., 3573611-4">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
                                         <label for="site_logo" class="form-label">Site Logo</label>
                                         <input type="file" class="form-control @error('site_logo') is-invalid @enderror" 
                                                id="site_logo" name="site_logo" accept="image/*">
@@ -56,24 +68,68 @@
                                 </div>
                             </div>
 
+                            <hr>
+                            <h5 class="mb-3">Contact Information</h5>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="phone" class="form-label">Phone</label>
+                                        <label for="phone" class="form-label">Phone 1</label>
                                         <input type="text" class="form-control" 
                                                id="phone" name="phone" 
-                                               value="{{ old('phone', $setting->phone ?? '') }}">
+                                               value="{{ old('phone', $setting->phone ?? '') }}"
+                                               placeholder="e.g., 0452503052">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
+                                        <label for="phone_2" class="form-label">Phone 2</label>
+                                        <input type="text" class="form-control" 
+                                               id="phone_2" name="phone_2" 
+                                               value="{{ old('phone_2', $setting->phone_2 ?? '') }}"
+                                               placeholder="e.g., 0449826014">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
                                         <label for="email" class="form-label">Email</label>
                                         <input type="email" class="form-control @error('email') is-invalid @enderror" 
                                                id="email" name="email" 
-                                               value="{{ old('email', $setting->email ?? '') }}">
+                                               value="{{ old('email', $setting->email ?? '') }}"
+                                               placeholder="e.g., info@ntkpro.fi">
                                         @error('email')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <textarea class="form-control" id="address" name="address" rows="2" 
+                                          placeholder="e.g., Haltiantie 8 M 99 01600 Vantaa">{{ old('address', $setting->address ?? '') }}</textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="contact_person_1" class="form-label">Contact Person 1</label>
+                                        <input type="text" class="form-control" 
+                                               id="contact_person_1" name="contact_person_1" 
+                                               value="{{ old('contact_person_1', $setting->contact_person_1 ?? '') }}"
+                                               placeholder="e.g., Md. Taij Uddin">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="contact_person_2" class="form-label">Contact Person 2</label>
+                                        <input type="text" class="form-control" 
+                                               id="contact_person_2" name="contact_person_2" 
+                                               value="{{ old('contact_person_2', $setting->contact_person_2 ?? '') }}"
+                                               placeholder="e.g., Polash Dhali">
                                     </div>
                                 </div>
                             </div>
@@ -84,11 +140,6 @@
                                        id="working_hours" name="working_hours" 
                                        value="{{ old('working_hours', $setting->working_hours ?? '') }}"
                                        placeholder="e.g., 10:00am - 10:00pm Mon - Sun">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="address" class="form-label">Address</label>
-                                <textarea class="form-control" id="address" name="address" rows="2">{{ old('address', $setting->address ?? '') }}</textarea>
                             </div>
 
                             <hr>

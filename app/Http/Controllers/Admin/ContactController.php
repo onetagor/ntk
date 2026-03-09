@@ -65,11 +65,16 @@ class ContactController extends Controller
             'replied_by' => Auth::guard('admin')->id(),
         ]);
 
-        // Here you can send email to the user with the reply
-        // Mail::to($contact->email)->send(new ContactReplyMail($contact));
+        // Send email to the customer with the reply
+        try {
+            \Mail::to($contact->email)->send(new \App\Mail\ContactReplyMail($contact));
+        } catch (\Exception $e) {
+            // Log email error but don't fail the request
+            \Log::error('Contact reply email failed: ' . $e->getMessage());
+        }
 
         $toster = array(
-            'message' => 'Reply sent successfully!',
+            'message' => 'Reply sent successfully! Email has been sent to the customer.',
             'alert-type' => 'success'
         );
 

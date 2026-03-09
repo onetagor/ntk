@@ -4,6 +4,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 use App\Http\View\Composers\SiteSettingComposer;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Use Bootstrap for pagination
+        Paginator::useBootstrap();
+        
         Gate::before(function ($user, $ability) {
             return $user->hasRole('SuperAdmin') ? true : null;
         });

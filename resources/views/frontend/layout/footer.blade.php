@@ -14,41 +14,59 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             {{-- Company Information (Left Side) --}}
             <div class="bg-white rounded-lg shadow-lg p-8 text-left">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">NTK Pro-Services Oy</h2>
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">{{ siteSetting('site_name', 'NTK Pro-Services Oy') }}</h2>
                 
                 <div class="space-y-4 text-gray-700">
+                    @if(siteSetting('business_id'))
                     <div>
                         <p class="font-semibold text-green-600 mb-1">Y-tunnus (Business ID):</p>
-                        <p>3373611-4</p>
+                        <p>{{ siteSetting('business_id') }}</p>
                     </div>
+                    @endif
                     
+                    @if(siteSetting('address'))
                     <div>
                         <p class="font-semibold text-green-600 mb-1">
                             <i class="fas fa-map-marker-alt mr-2"></i>Address:
                         </p>
-                        <p>Nõlvakiie 8 M 09</p>
-                        <p>01600 Vantaa</p>
+                        <p>{{ siteSetting('address') }}</p>
                     </div>
+                    @endif
                     
+                    @if(siteSetting('phone') || siteSetting('phone_2'))
                     <div>
                         <p class="font-semibold text-green-600 mb-1">
                             <i class="fas fa-phone mr-2"></i>Phone:
                         </p>
-                        <p>{{ siteSetting('phone', '+358 XX XXX XXXX') }}</p>
+                        @if(siteSetting('phone'))
+                            <p>{{ siteSetting('phone') }}</p>
+                        @endif
+                        @if(siteSetting('phone_2'))
+                            <p>{{ siteSetting('phone_2') }}</p>
+                        @endif
                     </div>
+                    @endif
                     
+                    @if(siteSetting('email'))
                     <div>
                         <p class="font-semibold text-green-600 mb-1">
                             <i class="fas fa-envelope mr-2"></i>Email:
                         </p>
-                        <p>{{ siteSetting('email', 'info@ntkproservices.fi') }}</p>
+                        <p>{{ siteSetting('email') }}</p>
                     </div>
+                    @endif
                     
+                    @if(siteSetting('contact_person_1') || siteSetting('contact_person_2'))
                     <div>
                         <p class="font-semibold text-green-600 mb-1">Contact Persons:</p>
-                        <p>Bappy Mahudun</p>
-                        <p>Mohammad Mahsin</p>
+                        @if(siteSetting('contact_person_1'))
+                            <p>{{ siteSetting('contact_person_1') }}</p>
+                        @endif
+                        @if(siteSetting('contact_person_2'))
+                            <p>{{ siteSetting('contact_person_2') }}</p>
+                        @endif
                     </div>
+                    @endif
                 </div>
             </div>
 
@@ -132,7 +150,7 @@
         
         {{-- Logo --}}
         <div class="mb-8">
-            <img src="{{ asset('assets/img/ntk-logo.jpeg') }}" alt="Cleanifer Logo" class="h-20 mx-auto">
+            <img src="{{ $siteSetting && $siteSetting->site_logo ? asset('storage/' . $siteSetting->site_logo) : asset('assets/img/ntk-logo.jpeg') }}" alt="{{ siteSetting('site_name', 'NTK Pro-Services') }}" class="h-20 mx-auto">
         </div>
 
         {{-- Navigation Menu --}}

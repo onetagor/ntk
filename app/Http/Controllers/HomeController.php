@@ -466,13 +466,25 @@ class HomeController extends Controller
             'message' => 'required|string|max:5000',
         ]);
 
-        Contact::create([
+        $contact = Contact::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'message' => $request->message,
             'status' => 'pending'
         ]);
+
+        // Send confirmation email to customer
+        try {
+            Mail::to($contact->email)->send(new \App\Mail\ContactMessageReceived($contact));
+            
+            // Send notification to admin
+            $adminEmail = config('mail.admin_email', env('ADMIN_EMAIL', 'admin@example.com'));
+            Mail::to($adminEmail)->send(new \App\Mail\NewContactNotification($contact));
+        } catch (\Exception $e) {
+            // Log email error but don't fail the request
+            \Log::error('Contact email failed: ' . $e->getMessage());
+        }
 
         $toster = array(
             'message' => 'Your message has been sent successfully! We will contact you soon.',

@@ -62,7 +62,7 @@
         {{-- Image and Experience/Specials section --}}
         <div class="flex flex-col md:flex-row items-start gap-8">
             <div class="md:w-1/2">
-                <img src="{{ asset('assets/img/services_1.jpg') }}" alt="About Us" class="w-full rounded-lg">
+                <img src="{{ Storage::url($siteSetting->about_image) }}" alt="About Us" class="w-full rounded-lg">
             </div>
             <div class="md:w-1/2 space-y-8">
                 <div>

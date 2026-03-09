@@ -67,6 +67,10 @@ class OrderController extends Controller
             'admin_notes' => 'nullable|string',
         ]);
 
+        // Store old status for email notification
+        $oldStatus = $order->status;
+        $statusChanged = ($oldStatus !== $validated['status']);
+
         $order->update($validated);
 
         // Update timestamps based on status
@@ -78,8 +82,23 @@ class OrderController extends Controller
             $order->update(['completed_at' => now()]);
         }
 
+        // Send status update email if status changed
+        if ($statusChanged) {
+            try {
+                \Mail::to($order->customer_email)->send(new \App\Mail\OrderStatusUpdated($order, $oldStatus));
+            } catch (\Exception $e) {
+                // Log email error but don't fail the update
+                \Log::error('Order status update email failed: ' . $e->getMessage());
+            }
+        }
+
+        $message = 'Order updated successfully!';
+        if ($statusChanged) {
+            $message .= ' Customer has been notified via email.';
+        }
+
         return redirect()->route('admin.orders.show', $order)
-            ->with('success', 'Order updated successfully!');
+            ->with('success', $message);
     }
 
     public function destroy(Order $order)
@@ -97,6 +116,9 @@ class OrderController extends Controller
             'collect_payment' => 'nullable|boolean',
             'payment_method' => 'nullable|in:cash,card,bank_transfer,online',
         ]);
+
+        // Store old status for email notification
+        $oldStatus = $order->status;
 
         $order->update(['status' => $validated['status']]);
 
@@ -116,10 +138,21 @@ class OrderController extends Controller
             ]);
         }
 
+        // Send status update email to customer
+        if ($oldStatus !== $validated['status']) {
+            try {
+                \Mail::to($order->customer_email)->send(new \App\Mail\OrderStatusUpdated($order, $oldStatus));
+            } catch (\Exception $e) {
+                // Log email error but don't fail the update
+                \Log::error('Order status update email failed: ' . $e->getMessage());
+            }
+        }
+
         $message = 'Order status updated successfully!';
         if ($request->collect_payment) {
             $message = 'Order status and payment updated successfully!';
         }
+        $message .= ' Customer has been notified via email.';
 
         return back()->with('success', $message);
     }
