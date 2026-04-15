@@ -177,7 +177,7 @@
                 @endif
                 @if($siteSetting && $siteSetting->linkedin_url)
                 <a href="{{ $siteSetting->linkedin_url }}" target="_blank" class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition duration-300">
-                    <i class="fab fa-linkedin-in"></i>
+                    <i class="fab fa-instagram"></i>
                 </a>
                 @endif
                 @if($siteSetting && $siteSetting->youtube_url)
@@ -185,11 +185,11 @@
                     <i class="fab fa-youtube"></i>
                 </a>
                 @endif
-                @if($siteSetting && $siteSetting->twitter_url)
+                {{-- @if($siteSetting && $siteSetting->twitter_url)
                 <a href="{{ $siteSetting->twitter_url }}" target="_blank" class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition duration-300">
                     <i class="fab fa-twitter"></i>
                 </a>
-                @endif
+                @endif --}}
             </div>
         </div>
     </div>

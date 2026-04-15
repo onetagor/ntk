@@ -145,7 +145,7 @@
                             <hr>
                             <h5 class="mb-3">Social Media Links</h5>
 
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="facebook_url" class="form-label">Facebook URL</label>
@@ -162,12 +162,12 @@
                                                value="{{ old('twitter_url', $setting->twitter_url ?? '') }}">
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="linkedin_url" class="form-label">LinkedIn URL</label>
+                                        <label for="linkedin_url" class="form-label">Instagram URL</label>
                                         <input type="url" class="form-control" 
                                                id="linkedin_url" name="linkedin_url" 
                                                value="{{ old('linkedin_url', $setting->linkedin_url ?? '') }}">
