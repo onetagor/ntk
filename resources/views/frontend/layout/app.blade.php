@@ -6,14 +6,15 @@
     @stack('custome-css')
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-00LJTRFHJW"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0NQWYJVT97"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', 'G-00LJTRFHJW');
+    gtag('config', 'G-0NQWYJVT97');
     </script>
+    
 </head>
 <body class="text-gray-700 font-sans">
 
